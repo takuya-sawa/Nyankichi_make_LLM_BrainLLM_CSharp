@@ -231,6 +231,137 @@ public class BrainNetwork
     }
 
     /// <summary>
+    /// 選択的Forward - 指定されたニューロンだけを活性化（海馬加速用）
+    /// </summary>
+    public float[] SelectiveForward(float[] input, HashSet<int> activeNeuronIds)
+    {
+        if (input.Length > inputLayerSize)
+        {
+            throw new ArgumentException($"Input size {input.Length} exceeds network input layer size {inputLayerSize}");
+        }
+        
+        // 入力層のニューロンにデータを設定（全部必要）
+        for (int i = 0; i < input.Length; i++)
+        {
+            if (neurons.ContainsKey(i))
+            {
+                var dendrites = neurons[i].GetDendrites();
+                if (dendrites.Count > 0)
+                {
+                    dendrites[0].Value = input[i];
+                }
+                neurons[i].Fire();
+            }
+        }
+
+        // 隠れ層 - 選択されたニューロンだけ発火
+        for (int i = 0; i < hiddenLayerSize; i++)
+        {
+            int neuronId = inputLayerSize + i;
+            
+            // 選択されていないニューロンはスキップ
+            if (!activeNeuronIds.Contains(neuronId))
+            {
+                continue;
+            }
+            
+            if (!neurons.ContainsKey(neuronId))
+            {
+                continue;
+            }
+
+            var hiddenNeuron = neurons[neuronId];
+            var dendrites = hiddenNeuron.GetDendrites();
+            
+            // デンドライトに入力を設定
+            foreach (var dendrite in dendrites)
+            {
+                if (neurons.ContainsKey(dendrite.SourceNeuronId))
+                {
+                    var sourceNeuron = neurons[dendrite.SourceNeuronId];
+                    dendrite.Value = sourceNeuron.ActionPotential * dendrite.Weight;
+                }
+            }
+            
+            hiddenNeuron.Fire();
+        }
+
+        // 出力層 - 選択された隠れ層からの信号のみ受信
+        for (int i = 0; i < outputLayerSize; i++)
+        {
+            int neuronId = inputLayerSize + hiddenLayerSize + i;
+            if (!neurons.ContainsKey(neuronId))
+            {
+                continue;
+            }
+
+            var outputNeuron = neurons[neuronId];
+            var dendrites = outputNeuron.GetDendrites();
+            
+            // デンドライトに入力を設定（選択された隠れ層のみ）
+            foreach (var dendrite in dendrites)
+            {
+                if (activeNeuronIds.Contains(dendrite.SourceNeuronId) && neurons.ContainsKey(dendrite.SourceNeuronId))
+                {
+                    var sourceNeuron = neurons[dendrite.SourceNeuronId];
+                    dendrite.Value = sourceNeuron.ActionPotential * dendrite.Weight;
+                }
+                else
+                {
+                    dendrite.Value = 0;  // 選択されていないニューロンからの信号は0
+                }
+            }
+            
+            // 跳躍伝導も選択的に処理
+            float saltatoryConductionSignal = 0;
+            int saltatoryConductionCount = 0;
+            
+            foreach (var hiddenId in activeNeuronIds)
+            {
+                if (hiddenId >= inputLayerSize && hiddenId < inputLayerSize + hiddenLayerSize)
+                {
+                    if (neurons.ContainsKey(hiddenId))
+                    {
+                        var hiddenNeuron = neurons[hiddenId];
+                        var saltatory = hiddenNeuron.GetSaltatoryConductionAxons()
+                            .FirstOrDefault(s => s.TargetNeuronId == neuronId);
+                        
+                        if (saltatory != null)
+                        {
+                            saltatoryConductionSignal += hiddenNeuron.ActionPotential * saltatory.ConductionStrength;
+                            saltatoryConductionCount++;
+                        }
+                    }
+                }
+            }
+            
+            if (saltatoryConductionCount > 0)
+            {
+                float avgSaltatory = saltatoryConductionSignal / saltatoryConductionCount;
+                if (dendrites.Count > 0)
+                {
+                    dendrites[0].Value += avgSaltatory * 0.1f;
+                }
+            }
+            
+            outputNeuron.Fire();
+        }
+
+        // 出力層の活動を取得
+        var outputs = new float[outputLayerSize];
+        for (int i = 0; i < outputLayerSize; i++)
+        {
+            int neuronId = inputLayerSize + hiddenLayerSize + i;
+            if (neurons.ContainsKey(neuronId))
+            {
+                outputs[i] = Math.Max(0, neurons[neuronId].ActionPotential);
+            }
+        }
+
+        return Softmax(outputs);
+    }
+
+    /// <summary>
     /// Softmax正規化
     /// </summary>
     private float[] Softmax(float[] x)

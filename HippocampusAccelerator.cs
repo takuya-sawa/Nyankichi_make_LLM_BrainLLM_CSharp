@@ -21,17 +21,18 @@ public class HippocampusAccelerator
     private long totalInferences = 0;
     private long totalNeuronsActivated = 0;
     
-    public HippocampusAccelerator(BrainNetwork brain, Hippocampus hippocampus, int topK = 100)
+    public HippocampusAccelerator(BrainNetwork brain, Hippocampus hippocampus, int topK = 20)
     {
         this.brain = brain;
         this.hippocampus = hippocampus;
         this.topKPathways = topK;
         
         Console.WriteLine("\n╔══════════════════════════════════════════════════════════╗");
-        Console.WriteLine("║  海馬アクセラレータ - CUDA対抗システム                  ║");
+        Console.WriteLine("║  海馬アクセラレータ - CUDA撃破モード 🚀                 ║");
         Console.WriteLine("╚══════════════════════════════════════════════════════════╝");
         Console.WriteLine($"[HippocampusAccelerator] 選択的活性化: Top-{topK} 経路");
-        Console.WriteLine($"[HippocampusAccelerator] 理論的計算削減: ~{100 - topK/10.0:F0}%\n");
+        Console.WriteLine($"[HippocampusAccelerator] 理論的計算削減: ~{100 - topK/1.06:F0}%");
+        Console.WriteLine($"[HippocampusAccelerator] 真の選択的Forward実装 ⚡\n");
     }
     
     /// <summary>
@@ -42,9 +43,14 @@ public class HippocampusAccelerator
         var startTime = DateTime.UtcNow;
         totalInferences++;
         
-        // 1. 強化された経路のみ取得（LTP）
+        // 1. 強化された経路のみ取得（改良されたスコアリング）
         var strongPathways = hippocampus.GetFrequentPathways(minAccessCount: 1)
-            .OrderByDescending(p => p.Strength * Math.Log(p.AccessCount + 1))  // 強度 × log(頻度)
+            .OrderByDescending(p => {
+                // より洗練されたスコアリング: 強度^2 × log(1 + アクセス数)
+                // 最近アクセスされたものを優遇
+                float recencyBonus = 1.0f / (1.0f + (totalInferences - p.LastAccessTime));
+                return p.Strength * p.Strength * Math.Log(p.AccessCount + 1) * (1 + recencyBonus);
+            })
             .Take(topKPathways)
             .ToList();
         
@@ -70,8 +76,10 @@ public class HippocampusAccelerator
             Console.WriteLine($"  スパース率: {activeNeuronIds.Count / 106.0:P1}");
         }
         
-        // 3. 選択的Forward（通常のForwardを使うが、後で最適化可能）
-        var output = brain.Forward(input);
+        // 3. 真の選択的Forward（選択されたニューロンだけ計算）🚀
+        var output = activeNeuronIds.Count > 0 && strongPathways.Count > 0
+            ? brain.SelectiveForward(input, activeNeuronIds)
+            : brain.Forward(input);  // フォールバック
         
         var elapsed = (DateTime.UtcNow - startTime).TotalMilliseconds;
         
@@ -124,25 +132,38 @@ public class HippocampusAccelerator
     }
     
     /// <summary>
-    /// 学習付きForward - 推論しながら経路を記録
+    /// 学習付きForward - 推論しながら経路を記録（改良版）
     /// </summary>
     public float[] ForwardAndRecord(float[] input, string context = "training")
     {
         // 通常のForward
         var output = brain.Forward(input);
         
-        // 簡易的に出力から逆算して記録（実際のhidden activationは取得できないので近似）
+        // より積極的な経路記録（入力→隠れ、隠れ→出力の両方）
+        // 入力層→隠れ層の経路
         for (int i = 0; i < input.Length; i++)
         {
-            if (Math.Abs(input[i]) > 0.01f)
+            if (Math.Abs(input[i]) > 0.001f)  // 閾値を下げてより多くの経路を記録
             {
-                for (int o = 0; o < output.Length; o++)
+                // 隠れ層全体に記録（簡易版）
+                for (int h = 0; h < 64; h++)  // 隠れ層64個
                 {
-                    if (Math.Abs(output[o]) > 0.01f)
-                    {
-                        // 入力→出力の相関を記録（間接的に隠れ層経路を学習）
-                        hippocampus.RecordAccess(i, 96 + o, input[i] * output[o], context);
-                    }
+                    int hiddenId = 32 + h;  // 入力層32個の後
+                    hippocampus.RecordAccess(i, hiddenId, input[i] * 0.1f, $"{context}_input_hidden");
+                }
+            }
+        }
+        
+        // 隠れ層→出力層の経路
+        for (int h = 0; h < 64; h++)
+        {
+            int hiddenId = 32 + h;
+            for (int o = 0; o < output.Length; o++)
+            {
+                if (Math.Abs(output[o]) > 0.001f)
+                {
+                    int outputId = 96 + o;  // 入力32+隠れ64の後
+                    hippocampus.RecordAccess(hiddenId, outputId, output[o] * 0.1f, $"{context}_hidden_output");
                 }
             }
         }

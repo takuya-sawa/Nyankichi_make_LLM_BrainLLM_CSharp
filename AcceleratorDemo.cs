@@ -12,8 +12,7 @@ public class AcceleratorDemo
 {
     public static void Run()
     {
-        Console.Clear();
-        Console.WriteLine("╔════════════════════════════════════════════════════════════════╗");
+        Console.WriteLine("\n╔════════════════════════════════════════════════════════════════╗");
         Console.WriteLine("║                                                                ║");
         Console.WriteLine("║       🧠 海馬アクセラレータ vs ⚡ CUDA 総当たり計算         ║");
         Console.WriteLine("║                                                                ║");
@@ -52,8 +51,8 @@ public class AcceleratorDemo
         // Hippocampusを作成
         var hippocampus = new Hippocampus(explorationRate: 0.1f, noiseLevel: 0.05f, forgettingRate: 0.02f);
         
-        // HippocampusAcceleratorを作成
-        var accelerator = new HippocampusAccelerator(brain, hippocampus, topK: 50);
+        // HippocampusAcceleratorを作成（攻撃的な最適化でCUDAに勝つ）
+        var accelerator = new HippocampusAccelerator(brain, hippocampus, topK: 20);
 
         Console.WriteLine("\n{'=',-70}");
         Console.WriteLine("[Step 2] 初期状態のベンチマーク（学習前）\n");
