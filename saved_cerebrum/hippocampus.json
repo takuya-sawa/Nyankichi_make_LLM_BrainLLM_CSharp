@@ -3,7 +3,7 @@
     {
       "SourceNeuronId": -1,
       "TargetNeuronId": -1,
-      "SignalStrength": 0.1,
+      "SignalStrength": 0.099999994,
       "Timestamp": 0,
       "Context": "Input \u2192 LanguageArea"
     },
@@ -38,49 +38,49 @@
     {
       "SourceNeuronId": -1,
       "TargetNeuronId": -1,
-      "SignalStrength": 0.1,
+      "SignalStrength": 0.10000001,
       "Timestamp": 6,
       "Context": "Input \u2192 GeneralArea"
     },
     {
       "SourceNeuronId": -1,
       "TargetNeuronId": -1,
-      "SignalStrength": 0.10000001,
+      "SignalStrength": 0.1,
       "Timestamp": 8,
       "Context": "Input \u2192 LanguageArea"
     },
     {
       "SourceNeuronId": -1,
       "TargetNeuronId": -1,
-      "SignalStrength": 0.1,
+      "SignalStrength": 0.099999994,
       "Timestamp": 9,
       "Context": "Input \u2192 TechnicalArea"
     },
     {
       "SourceNeuronId": -1,
       "TargetNeuronId": -1,
-      "SignalStrength": 0.099999994,
+      "SignalStrength": 0.1,
       "Timestamp": 10,
       "Context": "Input \u2192 GeneralArea"
     },
     {
       "SourceNeuronId": -1,
       "TargetNeuronId": -1,
-      "SignalStrength": 0.10000001,
+      "SignalStrength": 0.099999994,
       "Timestamp": 12,
       "Context": "Input \u2192 LanguageArea"
     },
     {
       "SourceNeuronId": -1,
       "TargetNeuronId": -1,
-      "SignalStrength": 0.099999994,
+      "SignalStrength": 0.1,
       "Timestamp": 13,
       "Context": "Input \u2192 TechnicalArea"
     },
     {
       "SourceNeuronId": -1,
       "TargetNeuronId": -1,
-      "SignalStrength": 0.1,
+      "SignalStrength": 0.099999994,
       "Timestamp": 14,
       "Context": "Input \u2192 GeneralArea"
     }
@@ -90,73 +90,81 @@
       "EventName": "Integration_3regions",
       "Timestamp": 3,
       "NeuronActivations": {
-        "0": 0.094966315,
-        "1": 0.094966315,
-        "2": 0.12561528,
-        "3": 0.094966315,
-        "4": 0.09915924,
-        "5": 0.094966315,
-        "6": 0.09832567,
-        "7": 0.094966315,
-        "8": 0.10214966,
-        "9": 0.0999186
+        "0": 0.09437329,
+        "1": 0.09437329,
+        "2": 0.13073407,
+        "3": 0.09437329,
+        "4": 0.09842842,
+        "5": 0.09437329,
+        "6": 0.09935806,
+        "7": 0.09437329,
+        "8": 0.10104655,
+        "9": 0.09856642
       },
       "Context": "LanguageArea,TechnicalArea,GeneralArea",
-      "RecordedTime": "2025-12-15T12:23:37.6322102Z"
+      "RecordedTime": "2025-12-15T12:32:24.7532354Z",
+      "LastAccessTime": 4,
+      "Importance": 0.5
     },
     {
       "EventName": "Integration_3regions",
       "Timestamp": 7,
       "NeuronActivations": {
-        "0": 0.09405786,
-        "1": 0.09405786,
-        "2": 0.098898545,
-        "3": 0.09405786,
-        "4": 0.12702078,
-        "5": 0.09405786,
-        "6": 0.101711534,
-        "7": 0.09405786,
-        "8": 0.099662095,
-        "9": 0.10241777
+        "0": 0.095546484,
+        "1": 0.095546484,
+        "2": 0.104057424,
+        "3": 0.095546484,
+        "4": 0.11767774,
+        "5": 0.095546484,
+        "6": 0.10132971,
+        "7": 0.095546484,
+        "8": 0.10052481,
+        "9": 0.09867796
       },
       "Context": "LanguageArea,TechnicalArea,GeneralArea",
-      "RecordedTime": "2025-12-15T12:23:37.6377816Z"
+      "RecordedTime": "2025-12-15T12:32:24.7606861Z",
+      "LastAccessTime": 8,
+      "Importance": 0.5
     },
     {
       "EventName": "Integration_3regions",
       "Timestamp": 11,
       "NeuronActivations": {
-        "0": 0.09432511,
-        "1": 0.09432511,
-        "2": 0.09980551,
-        "3": 0.09432511,
-        "4": 0.10454069,
-        "5": 0.09432511,
-        "6": 0.12414393,
-        "7": 0.09432511,
-        "8": 0.099050075,
-        "9": 0.10083423
+        "0": 0.09504492,
+        "1": 0.09504492,
+        "2": 0.10110063,
+        "3": 0.09504492,
+        "4": 0.10152165,
+        "5": 0.09504492,
+        "6": 0.12402588,
+        "7": 0.09504492,
+        "8": 0.10011088,
+        "9": 0.09801633
       },
       "Context": "LanguageArea,TechnicalArea,GeneralArea",
-      "RecordedTime": "2025-12-15T12:23:37.6402465Z"
+      "RecordedTime": "2025-12-15T12:32:24.7625238Z",
+      "LastAccessTime": 12,
+      "Importance": 0.5
     },
     {
       "EventName": "Integration_3regions",
       "Timestamp": 15,
       "NeuronActivations": {
-        "0": 0.0946387,
-        "1": 0.0946387,
-        "2": 0.101515934,
-        "3": 0.0946387,
-        "4": 0.101770826,
-        "5": 0.0946387,
-        "6": 0.10163201,
-        "7": 0.0946387,
-        "8": 0.12364294,
-        "9": 0.0982448
+        "0": 0.09538235,
+        "1": 0.09538235,
+        "2": 0.10129052,
+        "3": 0.09538235,
+        "4": 0.09900959,
+        "5": 0.09538235,
+        "6": 0.099874295,
+        "7": 0.09538235,
+        "8": 0.1225564,
+        "9": 0.10035744
       },
       "Context": "LanguageArea,TechnicalArea,GeneralArea",
-      "RecordedTime": "2025-12-15T12:23:37.6419364Z"
+      "RecordedTime": "2025-12-15T12:32:24.7642564Z",
+      "LastAccessTime": 16,
+      "Importance": 0.5
     }
   ],
   "FrequentPathways": [],

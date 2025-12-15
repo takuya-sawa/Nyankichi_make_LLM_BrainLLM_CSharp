@@ -31,13 +31,16 @@ public class Hippocampus
     private Random random = new Random();
     private float explorationRate = 0.15f;  // 探索率（15%の確率で新しい経路を試す）
     private float noiseLevel = 0.05f;       // ノイズレベル（記憶の曖昧さ）
+    private float forgettingRate = 0.02f;   // 忘却率（2%の記憶が毎回の想起で減衰）
+    private int forgettingThreshold = 50;   // 忘却閾値（この時間以上アクセスされないと忘却候補）
     
-    public Hippocampus(float explorationRate = 0.15f, float noiseLevel = 0.05f)
+    public Hippocampus(float explorationRate = 0.15f, float noiseLevel = 0.05f, float forgettingRate = 0.02f)
     {
         this.explorationRate = explorationRate;
         this.noiseLevel = noiseLevel;
+        this.forgettingRate = forgettingRate;
         Console.WriteLine($"[Hippocampus] 海馬を初期化しました - アクセス経路記憶システム起動");
-        Console.WriteLine($"[Hippocampus] 探索率: {explorationRate:P0}, ノイズレベル: {noiseLevel:F3}");
+        Console.WriteLine($"[Hippocampus] 探索率: {explorationRate:P0}, ノイズレベル: {noiseLevel:F3}, 忘却率: {forgettingRate:P1}");
     }
     
     /// <summary>
@@ -71,12 +74,19 @@ public class Hippocampus
             accessHistory.Dequeue();
         }
         
+        // 自動忘却（時々古い記憶を削除）
+        if (currentTimestamp % 10 == 0)  // 10アクセスごとに忘却処理
+        {
+            ForgetOldMemories();
+        }
+        
         // 頻繁な経路を強化（長期増強 LTP）
         string pathwayKey = $"{sourceNeuronId}->{targetNeuronId}";
         if (frequentPathways.ContainsKey(pathwayKey))
         {
             frequentPathways[pathwayKey].Strength += 0.1f;
             frequentPathways[pathwayKey].AccessCount++;
+            frequentPathways[pathwayKey].LastAccessTime = currentTimestamp;
         }
         else
         {
@@ -86,7 +96,8 @@ public class Hippocampus
                 TargetId = targetNeuronId,
                 Strength = signalStrength,
                 AccessCount = 1,
-                FirstAccess = DateTime.UtcNow
+                FirstAccess = DateTime.UtcNow,
+                LastAccessTime = currentTimestamp
             };
         }
     }
@@ -124,7 +135,9 @@ public class Hippocampus
             Timestamp = currentTimestamp++,
             NeuronActivations = new Dictionary<int, float>(neuronActivations),
             Context = context,
-            RecordedTime = DateTime.UtcNow
+            RecordedTime = DateTime.UtcNow,
+            LastAccessTime = currentTimestamp,
+            Importance = 0.5f  // 初期重要度
         };
         
         episodicMemories[episode.Timestamp] = episode;
@@ -217,13 +230,23 @@ public class Hippocampus
         {
             var randomIndex = random.Next(episodicMemories.Count);
             var randomEpisode = episodicMemories.Values.ElementAt(randomIndex);
+            randomEpisode.LastAccessTime = currentTimestamp;
+            randomEpisode.Importance = Math.Min(1.0f, randomEpisode.Importance + 0.1f);  // アクセスで重要度上昇
             Console.WriteLine($"[Hippocampus] 創造的想起: '{randomEpisode.EventName}' (ランダム)");
             return randomEpisode;
         }
         
         // 通常の想起
-        return episodicMemories.Values
+        var recalledEpisode = episodicMemories.Values
             .FirstOrDefault(e => e.EventName.Contains(eventName, StringComparison.OrdinalIgnoreCase));
+        
+        if (recalledEpisode != null)
+        {
+            recalledEpisode.LastAccessTime = currentTimestamp;
+            recalledEpisode.Importance = Math.Min(1.0f, recalledEpisode.Importance + 0.1f);
+        }
+        
+        return recalledEpisode;
     }
     
     /// <summary>
@@ -324,6 +347,70 @@ public class Hippocampus
         return nearbyNeurons;
     }
 
+    /// <summary>
+    /// 古い記憶を忘却（時間ベースの減衰）
+    /// </summary>
+    public void ForgetOldMemories()
+    {
+        int forgottenPathways = 0;
+        int forgottenEpisodes = 0;
+        
+        // 1. 弱い経路を忘却（強度が減衰して閾値以下になったもの）
+        var pathwaysToForget = new List<string>();
+        foreach (var kvp in frequentPathways)
+        {
+            var pathway = kvp.Value;
+            long timeSinceAccess = currentTimestamp - pathway.LastAccessTime;
+            
+            // 時間経過による減衰
+            if (timeSinceAccess > forgettingThreshold)
+            {
+                pathway.Strength *= (1.0f - forgettingRate);
+                
+                // 強度が0.1以下になったら忘却
+                if (pathway.Strength < 0.1f)
+                {
+                    pathwaysToForget.Add(kvp.Key);
+                }
+            }
+        }
+        
+        foreach (var key in pathwaysToForget)
+        {
+            frequentPathways.Remove(key);
+            forgottenPathways++;
+        }
+        
+        // 2. 古いエピソード記憶を忘却（最後にアクセスされてから時間が経過したもの）
+        var episodesToForget = new List<long>();
+        foreach (var kvp in episodicMemories)
+        {
+            var episode = kvp.Value;
+            long timeSinceAccess = currentTimestamp - episode.LastAccessTime;
+            
+            // アクセスされない記憶は忘れる
+            if (timeSinceAccess > forgettingThreshold * 2)  // エピソードは経路より長く保持
+            {
+                // 重要度が低い記憶を優先的に忘却
+                if (episode.Importance < 0.3f || random.NextDouble() < forgettingRate)
+                {
+                    episodesToForget.Add(kvp.Key);
+                }
+            }
+        }
+        
+        foreach (var timestamp in episodesToForget)
+        {
+            episodicMemories.Remove(timestamp);
+            forgottenEpisodes++;
+        }
+        
+        if (forgottenPathways > 0 || forgottenEpisodes > 0)
+        {
+            Console.WriteLine($"[Hippocampus] 忘却処理: 経路 {forgottenPathways}個, エピソード {forgottenEpisodes}個");
+        }
+    }
+    
     /// <summary>
     /// 記憶の統合（Consolidation）- 短期記憶を長期記憶へ
     /// </summary>
@@ -450,6 +537,8 @@ public class EpisodicMemory
     public Dictionary<int, float> NeuronActivations { get; set; } = new();
     public string Context { get; set; } = "";
     public DateTime RecordedTime { get; set; }
+    public long LastAccessTime { get; set; }  // 最後にアクセスされた時刻
+    public float Importance { get; set; } = 0.5f;  // 重要度（0.0～1.0）
 }
 
 /// <summary>
@@ -462,6 +551,7 @@ public class PathwayStrength
     public float Strength { get; set; }
     public int AccessCount { get; set; }
     public DateTime FirstAccess { get; set; }
+    public long LastAccessTime { get; set; }  // 最後にアクセスされた時刻
 }
 
 /// <summary>

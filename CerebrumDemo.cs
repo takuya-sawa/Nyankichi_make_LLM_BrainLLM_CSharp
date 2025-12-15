@@ -208,12 +208,37 @@ public class CerebrumDemo
         }
 
         Console.WriteLine("\n{'=',-70}");
+        Console.WriteLine("[Step 8] 忘却機能テスト - 重要でない記憶の自然な忘却");
+        
+        Console.WriteLine("\n[Before Forgetting] 現在の記憶状態:");
+        var beforeStats = hippocampus.ConsolidateMemory();
+        
+        Console.WriteLine("\n[Simulating Time] 時間経過をシミュレート（100タイムステップ）:");
+        // 時間だけを進める（新しいアクセスなし）
+        for (int i = 0; i < 100; i++)
+        {
+            hippocampus.RecordAccess(999, 999, 0.0f, "TimeProgress");  // ダミーアクセスで時間を進める
+        }
+        
+        Console.WriteLine("\n[Manual Forgetting] 手動で忘却処理を実行:");
+        hippocampus.ForgetOldMemories();
+        
+        Console.WriteLine("\n[After Forgetting] 忘却後の記憶状態:");
+        var afterStats = hippocampus.ConsolidateMemory();
+        
+        Console.WriteLine($"\n[Memory Changes] 記憶の変化:");
+        Console.WriteLine($"  エピソード記憶: {beforeStats.TotalEpisodes} → {afterStats.TotalEpisodes}");
+        Console.WriteLine($"  強化経路: {beforeStats.StrongPathways.Count} → {afterStats.StrongPathways.Count}");
+        Console.WriteLine($"  💡 重要: アクセスされない記憶は自然に忘れられます（生物学的に正しい動作）");
+
+        Console.WriteLine("\n{'=',-70}");
         Console.WriteLine("[Done] 大脳システムのデモンストレーション完了！");
         Console.WriteLine("  - 複数の保存されたネットワーク → 統合された大脳");
         Console.WriteLine("  - 領域間の協調動作と統合判断");
         Console.WriteLine("  - 大脳全体の永続化と復元");
         Console.WriteLine("  - 海馬によるアクセス経路の記憶");
-        Console.WriteLine("  - ランダム性による創造的思考 ⭐NEW");
+        Console.WriteLine("  - ランダム性による創造的思考 🆕");
+        Console.WriteLine("  - 時間ベースの記憶忘却 🆕");
         Console.WriteLine($"{'=',-70}\n");
     }
 
