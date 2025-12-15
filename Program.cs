@@ -8,18 +8,28 @@ using BrainLLM;
 // ニューロンベースの言語モデル
 // ============================================================
 
-// コマンドライン引数で大脳デモを起動
-if (args.Length > 0 && args[0] == "--cerebrum")
+// コマンドライン引数で各種デモを起動
+if (args.Length > 0)
 {
-    CerebrumDemo.RunDemo();
-    return;
+    if (args[0] == "--cerebrum")
+    {
+        CerebrumDemo.RunDemo();
+        return;
+    }
+    else if (args[0] == "--accelerator")
+    {
+        AcceleratorDemo.Run();
+        return;
+    }
 }
 
 Console.WriteLine("================================================");
 Console.WriteLine("  BrainLLM - Biologically-Inspired Neural Network");
 Console.WriteLine("  Brain-cell type neuron-based Language Model");
 Console.WriteLine("================================================");
-Console.WriteLine("  オプション: --cerebrum で大脳統合システムを実行");
+Console.WriteLine("  オプション:");
+Console.WriteLine("    --cerebrum     大脳統合システムを実行");
+Console.WriteLine("    --accelerator  海馬アクセラレータ vs CUDA");
 Console.WriteLine("================================================\n");
 
 // ============================================================
