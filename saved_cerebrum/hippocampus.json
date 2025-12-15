@@ -1,0 +1,165 @@
+{
+  "AccessHistory": [
+    {
+      "SourceNeuronId": -1,
+      "TargetNeuronId": -1,
+      "SignalStrength": 0.1,
+      "Timestamp": 0,
+      "Context": "Input \u2192 LanguageArea"
+    },
+    {
+      "SourceNeuronId": -1,
+      "TargetNeuronId": -1,
+      "SignalStrength": 0.1,
+      "Timestamp": 1,
+      "Context": "Input \u2192 TechnicalArea"
+    },
+    {
+      "SourceNeuronId": -1,
+      "TargetNeuronId": -1,
+      "SignalStrength": 0.1,
+      "Timestamp": 2,
+      "Context": "Input \u2192 GeneralArea"
+    },
+    {
+      "SourceNeuronId": -1,
+      "TargetNeuronId": -1,
+      "SignalStrength": 0.1,
+      "Timestamp": 4,
+      "Context": "Input \u2192 LanguageArea"
+    },
+    {
+      "SourceNeuronId": -1,
+      "TargetNeuronId": -1,
+      "SignalStrength": 0.1,
+      "Timestamp": 5,
+      "Context": "Input \u2192 TechnicalArea"
+    },
+    {
+      "SourceNeuronId": -1,
+      "TargetNeuronId": -1,
+      "SignalStrength": 0.1,
+      "Timestamp": 6,
+      "Context": "Input \u2192 GeneralArea"
+    },
+    {
+      "SourceNeuronId": -1,
+      "TargetNeuronId": -1,
+      "SignalStrength": 0.10000001,
+      "Timestamp": 8,
+      "Context": "Input \u2192 LanguageArea"
+    },
+    {
+      "SourceNeuronId": -1,
+      "TargetNeuronId": -1,
+      "SignalStrength": 0.1,
+      "Timestamp": 9,
+      "Context": "Input \u2192 TechnicalArea"
+    },
+    {
+      "SourceNeuronId": -1,
+      "TargetNeuronId": -1,
+      "SignalStrength": 0.099999994,
+      "Timestamp": 10,
+      "Context": "Input \u2192 GeneralArea"
+    },
+    {
+      "SourceNeuronId": -1,
+      "TargetNeuronId": -1,
+      "SignalStrength": 0.10000001,
+      "Timestamp": 12,
+      "Context": "Input \u2192 LanguageArea"
+    },
+    {
+      "SourceNeuronId": -1,
+      "TargetNeuronId": -1,
+      "SignalStrength": 0.099999994,
+      "Timestamp": 13,
+      "Context": "Input \u2192 TechnicalArea"
+    },
+    {
+      "SourceNeuronId": -1,
+      "TargetNeuronId": -1,
+      "SignalStrength": 0.1,
+      "Timestamp": 14,
+      "Context": "Input \u2192 GeneralArea"
+    }
+  ],
+  "EpisodicMemories": [
+    {
+      "EventName": "Integration_3regions",
+      "Timestamp": 3,
+      "NeuronActivations": {
+        "0": 0.094966315,
+        "1": 0.094966315,
+        "2": 0.12561528,
+        "3": 0.094966315,
+        "4": 0.09915924,
+        "5": 0.094966315,
+        "6": 0.09832567,
+        "7": 0.094966315,
+        "8": 0.10214966,
+        "9": 0.0999186
+      },
+      "Context": "LanguageArea,TechnicalArea,GeneralArea",
+      "RecordedTime": "2025-12-15T12:23:37.6322102Z"
+    },
+    {
+      "EventName": "Integration_3regions",
+      "Timestamp": 7,
+      "NeuronActivations": {
+        "0": 0.09405786,
+        "1": 0.09405786,
+        "2": 0.098898545,
+        "3": 0.09405786,
+        "4": 0.12702078,
+        "5": 0.09405786,
+        "6": 0.101711534,
+        "7": 0.09405786,
+        "8": 0.099662095,
+        "9": 0.10241777
+      },
+      "Context": "LanguageArea,TechnicalArea,GeneralArea",
+      "RecordedTime": "2025-12-15T12:23:37.6377816Z"
+    },
+    {
+      "EventName": "Integration_3regions",
+      "Timestamp": 11,
+      "NeuronActivations": {
+        "0": 0.09432511,
+        "1": 0.09432511,
+        "2": 0.09980551,
+        "3": 0.09432511,
+        "4": 0.10454069,
+        "5": 0.09432511,
+        "6": 0.12414393,
+        "7": 0.09432511,
+        "8": 0.099050075,
+        "9": 0.10083423
+      },
+      "Context": "LanguageArea,TechnicalArea,GeneralArea",
+      "RecordedTime": "2025-12-15T12:23:37.6402465Z"
+    },
+    {
+      "EventName": "Integration_3regions",
+      "Timestamp": 15,
+      "NeuronActivations": {
+        "0": 0.0946387,
+        "1": 0.0946387,
+        "2": 0.101515934,
+        "3": 0.0946387,
+        "4": 0.101770826,
+        "5": 0.0946387,
+        "6": 0.10163201,
+        "7": 0.0946387,
+        "8": 0.12364294,
+        "9": 0.0982448
+      },
+      "Context": "LanguageArea,TechnicalArea,GeneralArea",
+      "RecordedTime": "2025-12-15T12:23:37.6419364Z"
+    }
+  ],
+  "FrequentPathways": [],
+  "SpatialMap": [],
+  "CurrentTimestamp": 16
+}

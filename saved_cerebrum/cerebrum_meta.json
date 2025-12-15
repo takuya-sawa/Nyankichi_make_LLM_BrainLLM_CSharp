@@ -1,0 +1,27 @@
+{
+  "Name": "Primary Language Cerebrum",
+  "Timestamp": 639013982176438342,
+  "Regions": [
+    {
+      "Name": "LanguageArea",
+      "Function": 0,
+      "FilePath": "saved_cerebrum\\LanguageArea.json",
+      "IsActive": true,
+      "CreatedAt": 639013982176010429
+    },
+    {
+      "Name": "TechnicalArea",
+      "Function": 3,
+      "FilePath": "saved_cerebrum\\TechnicalArea.json",
+      "IsActive": true,
+      "CreatedAt": 639013982176040984
+    },
+    {
+      "Name": "GeneralArea",
+      "Function": 7,
+      "FilePath": "saved_cerebrum\\GeneralArea.json",
+      "IsActive": true,
+      "CreatedAt": 639013982176041129
+    }
+  ]
+}

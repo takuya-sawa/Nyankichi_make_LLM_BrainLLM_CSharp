@@ -1,0 +1,14 @@
+D:\MakeLLM\BrainLLM_CSharp\obj\Release\net10.0\BrainLLM.GeneratedMSBuildEditorConfig.editorconfig
+D:\MakeLLM\BrainLLM_CSharp\obj\Release\net10.0\BrainLLM.AssemblyInfoInputs.cache
+D:\MakeLLM\BrainLLM_CSharp\obj\Release\net10.0\BrainLLM.AssemblyInfo.cs
+D:\MakeLLM\BrainLLM_CSharp\obj\Release\net10.0\BrainLLM.csproj.CoreCompileInputs.cache
+D:\MakeLLM\BrainLLM_CSharp\bin\Release\net10.0\BrainLLM.exe
+D:\MakeLLM\BrainLLM_CSharp\bin\Release\net10.0\BrainLLM.deps.json
+D:\MakeLLM\BrainLLM_CSharp\bin\Release\net10.0\BrainLLM.runtimeconfig.json
+D:\MakeLLM\BrainLLM_CSharp\bin\Release\net10.0\BrainLLM.dll
+D:\MakeLLM\BrainLLM_CSharp\bin\Release\net10.0\BrainLLM.pdb
+D:\MakeLLM\BrainLLM_CSharp\obj\Release\net10.0\BrainLLM.dll
+D:\MakeLLM\BrainLLM_CSharp\obj\Release\net10.0\refint\BrainLLM.dll
+D:\MakeLLM\BrainLLM_CSharp\obj\Release\net10.0\BrainLLM.pdb
+D:\MakeLLM\BrainLLM_CSharp\obj\Release\net10.0\BrainLLM.genruntimeconfig.cache
+D:\MakeLLM\BrainLLM_CSharp\obj\Release\net10.0\ref\BrainLLM.dll
